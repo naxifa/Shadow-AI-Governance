@@ -6,9 +6,10 @@ Community,Daily Prompts per Clinician,Q_prompt,triangular,1.5,3.0,6.0,prompts/da
 Community,PHI Exposure Probability,P_phi,beta_pert,0.015,0.030,0.055,probability,ASQ-PHI benchmark analysis
 Community,Base Breach Cost,C_base,lognormal,2500000,4200000,7500000,USD,IBM Breach Report (Low tier)
 Community,Shadow AI Premium,Delta_C_shadow,triangular,400000,670000,950000,USD,IBM Security Empirical Delta
-Community,HIPAA OCR Penalty Cap,Cap_OCR,constant,,2190294,,USD,45 CFR 102.3 statutory cap
+Community,HIPAA OCR Penalty Cap,Cap_OCR,constant,,2192204,,USD,45 CFR 102.3 statutory cap
 Community,Annual Proxy License,Cost_license,triangular,15000,20000,30000,USD/year,Enterprise SaaS per-user tier
 Community,Enterprise IT Integration,Cost_deploy,triangular,25000,35000,50000,USD,BAA/SSO/security review
+
 Regional,Beds,B,fixed,,350,,beds,AHA Baseline
 Regional,Staff Headcount,N_staff,triangular,2800,3500,4200,FTEs,Operational ratios (~10 staff/bed)
 Regional,Direct Adoption Rate,U_direct,beta_pert,0.12,0.17,0.28,proportion,Wolters Kluwer Survey
@@ -16,16 +17,17 @@ Regional,Daily Prompts per Clinician,Q_prompt,triangular,2.0,4.0,8.0,prompts/day
 Regional,PHI Exposure Probability,P_phi,beta_pert,0.018,0.030,0.060,probability,ASQ-PHI benchmark analysis
 Regional,Base Breach Cost,C_base,lognormal,5000000,7420000,11000000,USD,IBM Healthcare Sector Mean
 Regional,Shadow AI Premium,Delta_C_shadow,triangular,450000,670000,1050000,USD,IBM Security Empirical Delta
-Regional,HIPAA OCR Penalty Cap,Cap_OCR,constant,,2190294,,USD,45 CFR 102.3 statutory cap
+Regional,HIPAA OCR Penalty Cap,Cap_OCR,constant,,2192204,,USD,45 CFR 102.3 statutory cap
 Regional,Annual Proxy License,Cost_license,triangular,90000,120000,160000,USD/year,Enterprise SaaS per-user tier
 Regional,Enterprise IT Integration,Cost_deploy,triangular,60000,85000,120000,USD,BAA/SSO/firewall integration
+
 Academic,Beds,B,fixed,,1100,,beds,AHA Baseline
 Academic,Staff Headcount,N_staff,triangular,11500,14000,16500,FTEs,Operational ratios (~12-14 staff/bed)
-Academic,Direct Adoption Rate,U_direct,beta_pert,0.14,0.17,0.35,proportion,Wolters Kluwer Survey (High research mix)
+Academic,Direct Adoption Rate,U_direct,beta_pert,0.14,0.17,0.57,proportion,Wolters Kluwer Survey (High research mix)
 Academic,Daily Prompts per Clinician,Q_prompt,triangular,2.5,5.0,10.0,prompts/day,Research and clinical hybrid
 Academic,PHI Exposure Probability,P_phi,beta_pert,0.020,0.032,0.065,probability,ASQ-PHI benchmark analysis
 Academic,Base Breach Cost,C_base,lognormal,7500000,9800000,16000000,USD,IBM Healthcare Upper Tier
 Academic,Shadow AI Premium,Delta_C_shadow,triangular,500000,670000,1200000,USD,IBM Security Empirical Delta
-Academic,HIPAA OCR Penalty Cap,Cap_OCR,constant,,2190294,,USD,45 CFR 102.3 statutory cap
+Academic,HIPAA OCR Penalty Cap,Cap_OCR,constant,,2192204,,USD,45 CFR 102.3 statutory cap
 Academic,Annual Proxy License,Cost_license,triangular,350000,450000,600000,USD/year,Enterprise SaaS volume tier
 Academic,Enterprise IT Integration,Cost_deploy,triangular,120000,180000,250000,USD,Complex enterprise campus integration

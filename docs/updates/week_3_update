@@ -1,0 +1,69 @@
+# Research Progress Report 
+
+Financial Risk of Shadow AI in Healthcare: PHI Protection and Governance Decision Modeling 
+
+Research Focus 
+
+My research focuses on the risks that come from healthcare employees using unauthorized AI tools with sensitive clinical information. The project combines two areas that are usually looked at separately: a technical PHI protection system and a financial risk model. 
+
+The goal is to build a system that can detect and redact sensitive patient information before it reaches an outside AI tool and then connect that performance to the financial side. I want to estimate how much Shadow AI could cost a hospital, how much risk can be reduced through better controls, and when investing in those controls actually becomes worth the cost. 
+
+Progress So Far 
+
+During the first three weeks, I focused on building the foundation of the project, preparing the clinical data, and setting up the financial model. 
+
+I first collected the main real-world numbers that will be used in the model. This includes the reported 17% direct clinician use of unauthorized AI, the additional $670,000 cost linked to Shadow AI-related breaches, and the HIPAA Tier 4 penalty cap. These values give me a starting point for estimating the financial exposure created by unauthorized AI use. 
+
+I also created three hospital types so I can compare how risk changes depending on the size of the organization: a Community Hospital, Regional Health System, and Academic Medical Center. For each hospital type, I set up different assumptions around staff size, AI use, and financial exposure. Instead of using only fixed values, I am using probability distributions so the model can reflect uncertainty and different possible situations more realistically. 
+
+For the technical side, I processed the ASQ-PHI clinical dataset and standardized the clinical information into HIPAA Safe Harbor categories. I also kept clinical examples that contain numbers but are not actually PHI, such as lab values, vital signs, and medication dosages. This is important because I do not want the model to simply redact anything that looks sensitive and remove useful medical information. The final dataset was split into 70% training, 15% validation, and 15% testing. 
+
+Built an Automated Clinical Data Pipeline (preprocess_clinical.py): 
+
+I wrote a Python script to automatically load and parse clinical doctor queries from the ASQ-PHI benchmark dataset. 
+
+I cleaned messy entity labels and standardized them into clear HIPAA categories, such as patient names, doctor names, dates, ages, locations, and ID numbers. 
+
+I separated medical data like dosages (e.g., "50 mg") and lab results (e.g., "potassium 3.2") so the system wouldn't confuse normal clinical numbers with patient identifiers. 
+
+I kept "hard negatives" (medical questions with zero private details) in the data so the model learns not to over-redact regular medical language. 
+
+I formatted the text into structured prompt-and-response pairs with bracketed tags (like [PATIENT_NAME] and [DATE]). 
+
+I automatically partitioned the processed dataset into three separate .jsonl files: 70% for training, 15% for validation, and 15% for testing. 
+
+For the financial side, I built the first baseline Python model to calculate Annual Loss Expectancy and Return on Security Investment across the three hospital types. I also set up a bounded Poisson-based breach probability model, so the risk calculation stays realistic as the number of users and prompts increases. 
+
+Created a Baseline Financial Calculator (static_calc.py): 
+
+I wrote a deterministic Python script to calculate baseline Annual Loss Expectancy (ALE) and Return on Security Investment (ROSI) across small, medium, and large hospital tiers. 
+
+I coded a bounded Poisson hazard formula ($1 - e^{-lambda) to calculate breach probability, ensuring high prompt volumes never produce impossible chances above 100%. 
+
+I plugged in real-world benchmark numbers (a 17% clinician AI adoption rate, a $670,000 shadow AI penalty, and a $2.19M federal fine cap) to establish a baseline before running the full simulation. 
+
+I have also started drafting the Introduction, Literature Review, and Methodology sections and have been keeping the code, data work, and documentation organized in GitHub. 
+
+Current Stage - Week 4 
+
+I am currently working on both the technical and financial parts of the project. 
+
+On the technical side, I am setting up the fine-tuning process using the cleaned ASQ-PHI dataset. The main goal is to improve the model’s ability to detect PHI while still keeping the original clinical meaning of the text as much as possible. 
+
+On the financial side, I am building the full 10,000-trial Monte Carlo simulation. Instead of producing one fixed estimate, this will allow me to generate a range of possible financial outcomes across different hospital sizes and risk levels. This should give a better picture of both normal expected losses and more severe high-cost scenarios. 
+
+Next Steps 
+
+The next step will be to test the fine-tuned model using precision, recall, F1-score, and inference latency. 
+
+After that, I will connect the technical results directly to the financial model. For example, if the PHI detection system misses a certain percentage of sensitive information, that remaining exposure will affect the estimated breach probability and financial loss. 
+
+I will then complete the Total Cost of Ownership and Return on Security Investment calculations so I can compare the cost of implementing the governance system with the amount of financial risk it is expected to reduce. The main goal will be to find the break-even point for each type of hospital. 
+
+Overall Goal 
+
+The final goal is to bring the technical and financial sides together into one practical framework. Instead of only showing whether a PHI protection model works, I want the research to show what that technical performance means financially for a hospital. 
+
+Ultimately, the model should help answer: How much financial risk does Shadow AI create, how much can a PHI protection system reduce that risk, and when does investing in that system become worth it? 
+
+ 
