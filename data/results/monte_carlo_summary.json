@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-10-01T14:30:45.750111",
+  "trials": 10000,
+  "recall": 0.98,
+  "filter_latency_sec": 0.08,
+  "results": [
+    {
+      "archetype": "Community",
+      "annual_prompts_median": 74022,
+      "p_breach_unmit_median": 0.016980685697253528,
+      "p_breach_mit_median": 0.00034247155730421364,
+      "ale_unmit_median": 120957.65624830953,
+      "ale_mit_median": 2440.6470315799843,
+      "tco_median": 58348.35552010523,
+      "net_savings_p5": -3812.074027833721,
+      "net_savings_median": 60196.59558396123,
+      "net_savings_p95": 187249.7643463935,
+      "rosi_p5": -6.4059650284985175,
+      "rosi_median": 103.36258497504744,
+      "rosi_p95": 329.881838593488
+    },
+    {
+      "archetype": "Regional",
+      "annual_prompts_median": 704460,
+      "p_breach_unmit_median": 0.1564754032354111,
+      "p_breach_mit_median": 0.0033975395986040047,
+      "ale_unmit_median": 1619649.858057234,
+      "ale_mit_median": 35231.86574494986,
+      "tco_median": 212992.44642555807,
+      "net_savings_p5": 589806.1278953709,
+      "net_savings_median": 1372056.8378331123,
+      "net_savings_p95": 2758616.3499119803,
+      "rosi_p5": 275.504602444146,
+      "rosi_median": 645.785380530855,
+      "rosi_p95": 1323.368484345369
+    },
+    {
+      "archetype": "Academic",
+      "annual_prompts_median": 4344936,
+      "p_breach_unmit_median": 0.6762119508798651,
+      "p_breach_mit_median": 0.022300897982187873,
+      "ale_unmit_median": 8540982.946156882,
+      "ale_mit_median": 285236.84275462397,
+      "tco_median": 658101.5733345188,
+      "net_savings_p5": 4181683.1218514107,
+      "net_savings_median": 7575861.004425505,
+      "net_savings_p95": 12024273.024891883,
+      "rosi_p5": 621.1506189977104,
+      "rosi_median": 1149.6894563591106,
+      "rosi_p95": 1869.9642010347666
+    }
+  ]
+}

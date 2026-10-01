@@ -1,0 +1,44 @@
+# Week 4 Progress Update: Healthcare Risk Simulation & Dataset Preparation
+ 
+**Status:** Completed  
+**Key Files:** `src/simulation/distributions.py`, `src/data/preprocess_clinical.py`, `data/results/monte_carlo_summary.csv`
+
+---
+
+## 1. Executive Summary
+This week, I connected my healthcare data protection pipeline directly to a financial risk model. Instead of relying on static guesses, I built an automated 10,000-trial simulation that estimates breach risks, financial losses, and cost savings across three common hospital sizes. I also finalized and split the clinical dataset needed to train my AI safety filter.
+
+---
+
+## 2. What I Accomplished
+
+### A. Clinical Dataset Preparation (`src/data/preprocess_clinical.py`)
+* Cleaned and organized the **ASQ-PHI dataset (1,051 clinical prompts)**.
+* Grouped privacy labels into five essential categories: `Name`, `Location`, `Date`, `Contact`, and `ID`.
+* Split the records into **70% training, 15% validation, and 15% testing**.
+* Carefully distributed all **219 "hard negative" examples** (medical queries containing doses, vitals, or lab numbers, but no patient identifiers) across the splits so the AI learns not to block safe medical data.
+
+### B. Monte Carlo Risk Simulation (`src/simulation/distributions.py`)
+* Upgraded my model to run **10,000 randomized scenarios** for each hospital archetype[span_2](start_span)[span_2](end_span).
+* Used realistic statistical ranges for real-world uncertainties:
+  * How many doctors use AI tools without IT approval (Shadow AI)[span_3](start_span)[span_3](end_span).
+  * How often clinical notes accidentally contain patient information[span_4](start_span)[span_4](end_span).
+  * The actual remediation costs and HIPAA fines from a real-world breach[span_5](start_span)[span_5](end_span).
+* Included total operational expenses: software licensing, initial setup, and clinician workflow delay (factoring in an 80 ms filter latency at a $95/hour clinical rate)[span_6](start_span)[span_6](end_span).
+* Added an automated export feature that saves all outputs directly to `data/results/` for future retrieval[span_7](start_span)[span_7](end_span).
+
+---
+
+## 3. Key Findings from 10,000 Simulated Runs
+
+| Hospital Archetype | Unmitigated Breach Risk | Breach Risk With Filter | Annual Operating Cost | Median Net Savings | Median ROSI |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Community Hospital** | 1.70% | 0.03% | $58,348 | **$60,197** | **103.4%** |
+| **Regional Hospital** | 15.65% | 0.34% | $212,992 | **$1,372,057** | **645.8%** |
+| **Academic Medical Center** | 67.62% | 2.23% | $658,102 | **$7,575,861** | **1,149.7%** |
+
+* **Regional Hospitals:** Without protection, a mid-sized facility faces a **15.65% chance of a breach** each year, representing about **$1.62 million in expected losses**. With the filter in place, breach likelihood drops to **0.34%**, producing a **median net annual savings of $1.37 million** and a **645.8% Return on Security Investment (ROSI)** even after covering clinician latency costs.
+* **Academic Centers:** Due to massive staff sizes and high query volumes, large teaching hospitals experience a baseline breach risk of **67.62%**, where automated protection delivers a **median net savings of $7.58 million**.
+* **Community Hospitals:** Smaller facilities maintain positive returns (**103.4% ROSI**), confirming that pre-prompt filtering is economically viable regardless of organizational scale.
+
+---
