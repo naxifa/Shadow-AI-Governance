@@ -4,7 +4,7 @@
 
 This methodology specifically targets the cybersecurity, compliance, and clinical workflow risks of **ephemeral, browser-based text pastes** where healthcare workers copy unstructured clinical narratives directly into web-based conversational AI chatbots (such as ChatGPT) [@cyberhaven_shadow_ai_2023].
 
-Unlike legacy Data Loss Prevention (DLP) tools engineered to inspect static files and perimeter egress (such as PDFs, spreadsheets, email attachments, or USB transfers) [@garnter_dlp_market_2023], our architecture operates as an **inline, bidirectional prompt-sanitization trust layer**. It intercepts text at the browser input level in real time, extracts Protected Health Information (PHI), and maps sensitive entities to consistent synthetic surrogates while preserving critical numerical lab values, vitals, and medication dosages [@asq_phi_benchmark_2024]. Upon receiving the external LLM’s response, the gateway reconstructs the original entities via an ephemeral session state, enabling clinical utility without transmitting unencrypted PHI beyond institutional boundaries.
+Unlike legacy Data Loss Prevention (DLP) tools engineered to inspect static files and perimeter egress (such as PDFs, spreadsheets, email attachments, or USB transfers) [@garnter_dlp_market_2023], our architecture operates as an **inline, bidirectional prompt-sanitization trust layer** operationalizing the principles of AI Trust, Risk, and Security Management (AI TRISM) for healthcare communications [@gartner_ai_gateway_2025; @asq_phi_benchmark_2024][cite: 2, 3]. It intercepts text at the browser input level in real time, extracts Protected Health Information (PHI), and maps sensitive entities to consistent synthetic surrogates while preserving critical numerical lab values, vitals, and medication dosages [@asq_phi_benchmark_2024]. Upon receiving the external LLM’s response, the gateway reconstructs the original entities via an ephemeral session state, enabling clinical utility without transmitting unencrypted PHI beyond institutional boundaries.
 
 ---
 
@@ -225,3 +225,5 @@ The stochastic simulation is implemented in Python (utilizing `numpy` and `scipy
 * `[@vose_risk_analysis_2008]`: Vose, D. *Risk Analysis: A Quantitative Guide*. 3rd Edition, John Wiley & Sons, Chichester, UK, 2008.
 * `[@weber_clinical_nlp_deid_2021]`: Weber, G. M., Hong, C., & Palmer, N. P. "Challenges in Automating Clinical Narrative De-Identification Under HIPAA Safe Harbor." *Journal of Biomedical Informatics*, 118:103780, 2021.
 * `[@wolters_kluwer_2023]`: Wolters Kluwer Health. *Survey of Clinician Perspectives on Generative AI and Clinical Decision Support*. Wolters Kluwer Corporate Communications, 2023.
+* `[@gartner_ai_gateway_2025]`: Humphreys, A., Bhat, M., Guttridge, K., Pasricha, S., & Seth, D. "Market Guide for AI Gateways." *Gartner Research*, ID G00839683, Oct. 13, 2025.[cite: 1]
+

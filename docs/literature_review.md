@@ -35,7 +35,9 @@ Furthermore, legacy guardrails typically enforce a **binary blocking policy**—
 ### 2.3 Roundtrip Latency Overhead and Streaming Incompatibility
 Traditional DLP solutions operate through deep packet inspection or centralized proxy buffering, introducing multi-second processing delays [@garnter_dlp_market_2023]. In contrast, interactive clinical generative AI relies on near-instantaneous token-streaming responses to maintain clinical charting efficiency.
 
-Processing latency ($\Delta t_{\text{total}}$)—encompassing outbound prompt interception, entity extraction, surrogate replacement, and inbound response re-identification—must remain strictly bounded to prevent workflow friction. When security tools introduce noticeable lag, the accumulated cognitive and administrative friction translates directly into lost clinical charting hours [@sinsky_physician_ehr_time_2016].
+In their enterprise evaluation of AI gateways, Gartner explicitly highlights processing latency and performance degradation as primary obstacles inhibiting gateway adoption [@gartner_ai_gateway_2025]. Because interactive AI-assisted workflows are inherently sensitive to execution delays, any middleware pipeline that performs inline inspection introduces cognitive and operational friction. 
+
+In clinical environments, where cognitive charting velocity directly impacts operational throughput [@sinsky_physician_ehr_time_2016], processing latency ($\Delta t_{\text{total}}$)—encompassing outbound prompt interception, entity extraction, surrogate replacement, and inbound response re-identification—must remain strictly bounded. When security tools introduce noticeable lag, the accumulated friction translates directly into lost clinical charting hours, driving clinicians to bypass institutional security in favor of unmonitored consumer endpoints [@gartner_ai_gateway_2025; @wolters_kluwer_2023].
 
 ### 2.4 The Need for an Inline, Bidirectional Sanitization Gateway
 Overcoming these compounding vulnerabilities requires moving beyond static redaction filters toward an **inline, bidirectional prompt-sanitization gateway** [@asq_phi_benchmark_2024; @dettmers_qlora_2023]. Such an architecture must:
@@ -68,3 +70,4 @@ By preserving clinical reasoning context without transmitting raw PHI beyond ins
 * `[@sinsky_physician_ehr_time_2016]`: Sinsky, C., Colligan, L., Li, L., et al. "Allocation of Physician Time in Ambulatory Practice: A Time and Motion Study in 4 Specialties." *Annals of Internal Medicine*, 165(11):753–760, 2016.
 * `[@weber_clinical_nlp_deid_2021]`: Weber, G. M., Hong, C., & Palmer, N. P. "Challenges in Automating Clinical Narrative De-Identification Under HIPAA Safe Harbor." *Journal of Biomedical Informatics*, 118:103780, 2021.
 * `[@wolters_kluwer_2023]`: Wolters Kluwer Health. *Survey of Clinician Perspectives on Generative AI and Clinical Decision Support*. Wolters Kluwer Corporate Communications, 2023.
+* `[@gartner_ai_gateway_2025]`: Humphreys, A., Bhat, M., Guttridge, K., Pasricha, S., & Seth, D. "Market Guide for AI Gateways." *Gartner Research*, ID G00839683, Oct. 13, 2025.

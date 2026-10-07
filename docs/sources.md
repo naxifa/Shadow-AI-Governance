@@ -124,3 +124,14 @@ This document details the empirical data sources, regulatory standards, and clin
 * **Rationale:** Replaced preliminary literature placeholders with synthetic exploratory bounds informed by enterprise Data Loss Prevention (DLP) telemetry tracking unstructured text egress.
 * **Simulation Parameter:** Modeled as a bounded stochastic parameter between **15% and 40% of unsanctioned clinical queries containing incidental Safe Harbor PHI**.
 * **Methodological Control:** Evaluated across a sensitivity range of $5\%\text{ to }50\%$ to confirm trust layer net savings across varying levels of clinician documentation discipline.
+
+## Week 5
+
+### 16. Humphreys, Bhat, Guttridge, Pasricha & Seth (2025) — *Gartner Research*
+* **Report Citation:** *Market Guide for AI Gateways*, Gartner Research, ID G00839683, Published 13 October 2025.
+* **Document URL:** https://www.gartner.com/document/7051698
+* **Exact Evidence & Parameters Provided:**
+  * **Enterprise Adoption & Growth Trajectory:** 25% of software engineering teams building multi-model architectures utilized AI gateways in 2025, projected to expand to 70% by 2028.
+  * **AI TRISM Governance Standard:** Defines AI Gateways as a centralized control plane enforcing AI Trust, Risk, and Security Management (AI TRISM) via bidirectional request and response guardrails (automated sensitive data detection and redaction).
+  * **Latency & Performance Vulnerability:** Identifies gateway processing latency and performance drag as primary technical obstacles inhibiting enterprise deployment for real-time interactive workloads.
+  * **Market Sizing & Deployment Paradigms:** Assesses the 2025 AI Gateway market between $50M and $100M, detailing deployment trade-offs across on-premises, edge, cloud, and hybrid infrastructure.
