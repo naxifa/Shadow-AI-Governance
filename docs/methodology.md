@@ -68,11 +68,12 @@ The model grounds its variables in published empirical literature, federal statu
 ## 5. Clinical Data Curation & LLM Fine-Tuning Pipeline
 
 ### 5.1 Training & Evaluation Corpora
-* **ASQ-PHI Benchmark Anchor:** The primary evaluation benchmark is anchored on the **1,051-query ASQ-PHI dataset**, comprising 2,973 tagged HIPAA Safe Harbor entities mapped into 5 core entity categories: `NAME`, `LOCATION`, `DATE`, `CONTACT`, and `ID` [@asq_phi_benchmark_2024; @hhs_hipaa_privacy_rule].
-* **Adversarial Hard Negatives:** Crucially includes **219 clinical hard negatives**—prompts containing complex physiological values, lab results, and medication dosages (e.g., serum potassium $4.2\text{ mEq/L}$, fasting glucose $110\text{ mg/dL}$, or $50\text{ mg}$ dosing intervals) with zero PHI [@asq_phi_benchmark_2024]. This ensures the model learns not to over-redact critical diagnostic numbers.
+* **ASQ-PHI Benchmark Anchor:** The primary evaluation benchmark is anchored on the **1,051-query ASQ-PHI dataset**, comprising 2,973 tagged HIPAA Safe Harbor entities mapped into 5 core entity categories: `NAME`, `LOCATION`, `DATE`, `CONTACT`, and `ID` [@weatherhead_asq_phi_2026; @hhs_hipaa_privacy_rule].
+* **Adversarial Hard Negatives:** Crucially includes **219 clinical hard negatives**—prompts containing complex physiological values, lab results, and medication dosages (e.g., serum potassium $4.2\text{ mEq/L}$, fasting glucose $110\text{ mg/dL}$, or $50\text{ mg}$ dosing intervals) with zero PHI [@weatherhead_asq_phi_2026]. This ensures the model learns not to over-redact critical diagnostic numbers.
+* **Synthetic Provenance & Safe-Handoff Boundary Alignment:** The benchmark corpus is intentionally composed of fully synthetic clinical search queries generated via adversarial few-shot prompting [@weatherhead_asq_phi_2026]. Because no real patient health records were accessed, the dataset provides an open, fully reproducible baseline under an MIT license. While formulated to evaluate the "safe handoff" point where BAA-governed systems invoke external tools or live web search, the prompt length, syntax, and entity density directly replicate unstructured copy-paste entries observed in browser-based Shadow AI usage.
 * **Extensibility:** The ingestion pipeline is structured modularly, allowing seamless incorporation of additional clinical corpora (such as the i2b2/n2c2 clinical de-identification challenge sets [@dernoncourt_deidentification_2017] and MIMIC-IV-Note subsets [@johnson_mimic_deid_2016]) into the instruction-tuning schema.
 * **Dataset Partitioning:** Standard 70/15/15 stratified train, validation, and test split.
-
+  
 ### 5.2 Model Architecture & Fine-Tuning
 * **Base Architectures:** Fine-tuning an open-source foundation model (e.g., Llama 3 8B or Mistral 7B) optimized for on-premises hospital deployment [@dettmers_qlora_2023].
 * **Adaptation Method:** Parameter-Efficient Fine-Tuning (PEFT) via QLoRA (Quantized Low-Rank Adaptation) using 4-bit NormalFloat (NF4) quantization and double quantization [@dettmers_qlora_2023]. This yields high contextual entity identification on unstructured conversational clinical prompts while maintaining a compact memory footprint for local hospital inference.
@@ -206,7 +207,7 @@ The stochastic simulation is implemented in Python (utilizing `numpy` and `scipy
 # References (Methodology Registry)
 
 * `[@aha_hospital_statistics_2023]`: American Hospital Association. *AHA Hospital Statistics 2023 Edition*. Health Forum LLC, 2023.
-* `[@asq_phi_benchmark_2024]`: ASQ-PHI Benchmark Consortium. *ASQ-PHI: A Real-World Conversational Benchmark for Protected Health Information De-Identification in Generative AI Prompts*. Clinical NLP Benchmark Suite, 2024.
+* `[@weatherhead_asq_phi_2026]`: Weatherhead, J., Golovko, G., & McCaffrey, P. (2026). "ASQ-PHI: An adversarial synthetic data benchmark for clinical de-identification and search utility." *Data in Brief*, 65, 112586. https://doi.org/10.1016/j.dib.2026.112586
 * `[@bls_healthcare_wages_2023]`: U.S. Bureau of Labor Statistics. *Occupational Employment and Wage Statistics: Healthcare Practitioners and Technical Occupations*. U.S. Department of Labor, May 2023.
 * `[@cyberhaven_shadow_ai_2023]`: Cyberhaven Inc. *Shadow AI in the Enterprise: Insights from Data Ingestion Across 3 Million Employees*. Cyberhaven Labs Research Report, 2023.
 * `[@dernoncourt_deidentification_2017]`: Dernoncourt, F., Lee, J. Y., Uzuner, Ö., & Szolovits, P. "De-identification of Patient Notes with Recurrent Neural Networks." *Journal of the American Medical Informatics Association (JAMIA)*, 24(3):596–606, 2017.
