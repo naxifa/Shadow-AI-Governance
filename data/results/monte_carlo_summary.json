@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-01T14:30:45.750111",
+  "timestamp": "2026-10-08T22:14:19.936509",
   "trials": 10000,
   "recall": 0.98,
   "filter_latency_sec": 0.08,

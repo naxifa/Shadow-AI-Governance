@@ -64,19 +64,24 @@ The model grounds its variables in published empirical literature, federal statu
 | **Model De-Identification Recall** | $R$ | Empirical % | Parametric Sweep: 70.0% to 99.9% | ASQ-PHI Benchmark Evaluation Split [@asq_phi_benchmark_2024] |
 
 ---
-
-## 5. Clinical Data Curation & LLM Fine-Tuning Pipeline
+## 5. Clinical Data Curation & SLM Fine-Tuning Pipeline
 
 ### 5.1 Training & Evaluation Corpora
-* **ASQ-PHI Benchmark Anchor:** The primary evaluation benchmark is anchored on the **1,051-query ASQ-PHI dataset**, comprising 2,973 tagged HIPAA Safe Harbor entities mapped into 5 core entity categories: `NAME`, `LOCATION`, `DATE`, `CONTACT`, and `ID` [@weatherhead_asq_phi_2026; @hhs_hipaa_privacy_rule].
-* **Adversarial Hard Negatives:** Crucially includes **219 clinical hard negatives**—prompts containing complex physiological values, lab results, and medication dosages (e.g., serum potassium $4.2\text{ mEq/L}$, fasting glucose $110\text{ mg/dL}$, or $50\text{ mg}$ dosing intervals) with zero PHI [@weatherhead_asq_phi_2026]. This ensures the model learns not to over-redact critical diagnostic numbers.
-* **Synthetic Provenance & Safe-Handoff Boundary Alignment:** The benchmark corpus is intentionally composed of fully synthetic clinical search queries generated via adversarial few-shot prompting [@weatherhead_asq_phi_2026]. Because no real patient health records were accessed, the dataset provides an open, fully reproducible baseline under an MIT license. While formulated to evaluate the "safe handoff" point where BAA-governed systems invoke external tools or live web search, the prompt length, syntax, and entity density directly replicate unstructured copy-paste entries observed in browser-based Shadow AI usage.
-* **Extensibility:** The ingestion pipeline is structured modularly, allowing seamless incorporation of additional clinical corpora (such as the i2b2/n2c2 clinical de-identification challenge sets [@dernoncourt_deidentification_2017] and MIMIC-IV-Note subsets [@johnson_mimic_deid_2016]) into the instruction-tuning schema.
-* **Dataset Partitioning:** Standard 70/15/15 stratified train, validation, and test split.
+- **ASQ-PHI Benchmark Anchor:** The primary evaluation benchmark is anchored on the **1,051-query ASQ-PHI dataset**, comprising 2,973 tagged HIPAA Safe Harbor entities mapped into 5 core entity categories: `NAME`, `LOCATION`, `DATE`, `CONTACT`, and `ID` [@weatherhead_asq_phi_2026; @hhs_hipaa_privacy_rule].
+- **Adversarial Hard Negatives:** Crucially includes **219 clinical hard negatives**—prompts containing complex physiological values, lab results, and medication dosages (e.g., serum potassium $4.2\text{ mEq/L}$, fasting glucose $110\text{ mg/dL}$, or $50\text{ mg}$ dosing intervals) with zero PHI [@weatherhead_asq_phi_2026]. This ensures the model learns not to over-redact critical diagnostic numbers.
+- **Synthetic Provenance & Safe-Handoff Boundary Alignment:** The benchmark corpus is intentionally composed of fully synthetic clinical search queries generated via adversarial few-shot prompting [@weatherhead_asq_phi_2026]. Because no real patient health records were accessed, the dataset provides an open, fully reproducible baseline under an MIT license. While formulated to evaluate the "safe handoff" point where BAA-governed systems invoke external tools or live web search, the prompt length, syntax, and entity density directly replicate unstructured copy-paste entries observed in browser-based Shadow AI usage.
+- **Extensibility:** The ingestion pipeline is structured modularly, allowing seamless incorporation of additional clinical corpora (such as the i2b2/n2c2 clinical de-identification challenge sets [@dernoncourt_deidentification_2017] and MIMIC-IV-Note subsets [@johnson_mimic_deid_2016]) into the instruction-tuning schema.
+- **Dataset Partitioning:** Standard 70/15/15 stratified train, validation, and test split.
   
-### 5.2 Model Architecture & Fine-Tuning
-* **Base Architectures:** Fine-tuning an open-source foundation model (e.g., Llama 3 8B or Mistral 7B) optimized for on-premises hospital deployment [@dettmers_qlora_2023].
-* **Adaptation Method:** Parameter-Efficient Fine-Tuning (PEFT) via QLoRA (Quantized Low-Rank Adaptation) using 4-bit NormalFloat (NF4) quantization and double quantization [@dettmers_qlora_2023]. This yields high contextual entity identification on unstructured conversational clinical prompts while maintaining a compact memory footprint for local hospital inference.
+### 5.2 Model Architecture & Fine-Tuning Pipeline
+
+To adapt the model for clinical Safe Harbor de-identification within edge-compute constraints, we implemented a Parameter-Efficient Fine-Tuning (PEFT) pipeline on Microsoft Phi-3-Mini-4k-Instruct (3.8B parameters). The architecture and training logic are configured as follows:
+
+* **Base Architecture & Edge Sizing:** Microsoft Phi-3-Mini was selected over 7B/8B alternatives to satisfy sub-100ms enterprise gateway latency requirements and minimize VRAM overhead on on-premises clinical hardware.
+* **4-Bit NormalFloat (NF4) Quantization:** To prevent out-of-memory crashes on single-GPU hardware (e.g., NVIDIA T4), the base model weights are compressed to 4-bit NormalFloat with double quantization enabled. This reduces the baseline memory footprint from ~7.6 GB to under 2.5 GB while preserving 16-bit brain floating-point (`bfloat16`) precision for gradient computation.
+* **Low-Rank Adaptation (LoRA):** Rather than updating all 3.8 billion network parameters, the base weights are frozen and low-rank adapter matrices are injected into the attention projection and MLP feedforward layers (`qkv_proj`, `o_proj`, `gate_up_proj`, `down_proj`). The adapter is parameterized with rank $r = 16$, scaling factor $\alpha = 32$, and a dropout rate of $0.05$. Trainable parameters account for less than 1% of total model capacity, mitigating catastrophic forgetting and overfitting on small clinical corpora.
+* **Instruction Formatting & Training Hyperparameters:** Training instances from the ASQ-PHI benchmark are mapped to the native Phi-3 chat template (`<|user|>` instruction and clinical query context; `<|assistant|>` structured de-identification output). Training is executed using the native Hugging Face `Trainer` across 3 epochs with a per-device batch size of 4, gradient accumulation steps of 4 (effective batch size of 16), a learning rate of $2 \times 10^{-4}$, and linear warmup.
+
 
 ### 5.3 Inline Bidirectional Sanitization & De-Identification Engine
 Instead of destructive permanent redaction or binary prompt blocking, the gateway executes an automated, context-preserving substitution loop [@asq_phi_benchmark_2024]:
